@@ -11,6 +11,7 @@ type Config struct {
 	Env      string `yaml:"env" env:"ENV" env-default:"local"`
 	Db       `yaml:"db"`
 	RabbitMQ `yaml:"rabbitmq"`
+	Email    `yaml:"email"`
 }
 
 type Db struct {
@@ -23,6 +24,12 @@ type Db struct {
 
 type RabbitMQ struct {
 	URL string `yaml:"url" env:"RABBITMQ_URL"`
+}
+
+type Email struct {
+	From string `yaml:"from" env:"EMAIL_FROM"`
+
+	ResendApiKey string `yaml:"api_key" env:"RESEND_API_KEY"`
 }
 
 func MustLoad() *Config {

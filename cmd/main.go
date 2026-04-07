@@ -5,6 +5,7 @@ import (
 	"log/slog"
 	"os"
 
+	"github.com/nlsnnn/berezhok-notifications/internal/adapters"
 	"github.com/nlsnnn/berezhok-notifications/internal/config"
 	"github.com/nlsnnn/berezhok-notifications/internal/consumer"
 	"github.com/nlsnnn/berezhok-notifications/internal/processor"
@@ -35,8 +36,10 @@ func main() {
 		return
 	}
 
+	resend := adapters.NewResendClient(cfg.Email.ResendApiKey, cfg.Email.From)
+
 	dispatcher := processor.NewDispatcher(log)
-	dispatcher.Register(processor.TypeEmail, processor.NewEmailProcessor())
+	dispatcher.Register(processor.TypeEmail, processor.NewEmailProcessor(resend))
 
 	consumer := consumer.New(conn.Channel, dispatcher, log)
 

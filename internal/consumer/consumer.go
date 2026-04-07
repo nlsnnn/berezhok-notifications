@@ -80,6 +80,8 @@ func (c *Consumer) handle(ctx context.Context, msg amqp.Delivery) {
 			continue
 		}
 
+		c.logger.Info("message processed successfully", "deliveryTag", msg.DeliveryTag)
+
 		msg.Ack(false)
 		return
 	}
