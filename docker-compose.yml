@@ -1,0 +1,19 @@
+services:
+  notifications:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: berezhok-notifications
+    environment:
+      CONFIG_PATH: /app/.env
+      RABBITMQ_URL: ${DOCKER_RABBITMQ_URL:-amqp://admin:secret@rabbitmq:5672/}
+    volumes:
+      - ./.env:/app/.env:ro
+    restart: unless-stopped
+    networks:
+      - main_project
+
+networks:
+  main_project:
+    external: true
+    name: ${MAIN_PROJECT_NETWORK:-berezhok_default}
